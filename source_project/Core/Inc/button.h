@@ -12,6 +12,7 @@ void button_run(void);
 
 uint8_t isButtonPressed(uint8_t id);
 uint8_t isButtonLongPressed(uint8_t id);
+// Check co dang canh xuong k
 uint8_t isButtonDown(uint8_t id);
 
 #endif

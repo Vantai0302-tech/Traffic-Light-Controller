@@ -100,6 +100,8 @@ int main(void)
   // Private init
   SCH_Init();
   timer_init();
+  button_init();
+
   SCH_Add_Task(timerRun, 1, 1);
   HAL_TIM_Base_Start_IT(&htim2);
 
