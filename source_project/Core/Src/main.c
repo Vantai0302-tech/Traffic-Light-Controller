@@ -101,6 +101,7 @@ int main(void)
   SCH_Init();
   timer_init();
   button_init();
+  fsm_automatic_init();
 
   SCH_Add_Task(timerRun, 1, 1);
   HAL_TIM_Base_Start_IT(&htim2);

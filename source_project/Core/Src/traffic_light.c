@@ -66,7 +66,6 @@ void traffic_all_red(void)
     traffic_set(2, RED);
 }
 
-
 void traffic_all_off(void)
 {
     traffic_set(1, OFF);
