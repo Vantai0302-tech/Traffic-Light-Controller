@@ -1,19 +1,17 @@
 /*
- * dht20.h - Driver cảm biến nhiệt độ / độ ẩm DHT20 (giao tiếp I2C, địa chỉ 0x38)
- *
- * CÁCH DÙNG:
- *   1. Trong main(), SAU khi MX_I2C1_Init() và TRƯỚC khi chạy scheduler:
- *          dht20_init(&hi2c1);
- *   2. Đăng ký một task chu kỳ 100 ms vào scheduler (tick 10 ms nên là 10 tick):
- *          SCH_Add_Task(dht20_update, 0, 10);
- *      Task này tự đo mỗi 2 giây, không chặn chương trình.
- *   3. Khi cần hiển thị (ví dụ lên LCD), lấy giá trị bằng các hàm get bên dưới.
- *
- * GIÁ TRỊ TRẢ VỀ ở dạng số nguyên theo phần mười, để không phải dùng số thực:
- *      dht20_get_temperature_x10() == 253   ->  25.3 độ C
- *      dht20_get_humidity_x10()    == 604   ->  60.4 %RH
- *
- * theo đề, module này là nơi duy nhất (cùng main.c) được gọi hàm HAL.
+  dht20.h - Driver cảm biến nhiệt độ / độ ẩm DHT20 (giao tiếp I2C, địa chỉ 0x38)
+ 
+  CÁCH DÙNG:
+    1. Trong main(), SAU khi MX_I2C1_Init() và TRƯỚC khi chạy scheduler:
+           dht20_init(&hi2c1);
+    2. Đăng ký một task chu kỳ 100 ms vào scheduler (tick 10 ms nên là 10 tick):
+           SCH_Add_Task(dht20_update, 0, 10);
+       Task này tự đo mỗi 2 giây, không chặn chương trình.
+    3. Khi cần hiển thị (ví dụ lên LCD), lấy giá trị bằng các hàm get bên dưới.
+ 
+  GIÁ TRỊ TRẢ VỀ ở dạng số nguyên theo phần mười, để không phải dùng số thực:
+       dht20_get_temperature_x10() == 253   ->  25.3 độ C
+       dht20_get_humidity_x10()    == 604   ->  60.4 %RH
  */
 #ifndef DHT20_H
 #define DHT20_H
