@@ -1,13 +1,15 @@
 #include "fsm_automatic.h"
 #include "software_timer.h"
 #include "traffic_light.h"
+#include "global.h"
 
 #define AUTO_TIMER_ID       0U
 
-#define TIME_GREEN1_MS     6000U
-#define TIME_YELLOW1_MS    2000U
-#define TIME_GREEN2_MS     4000U
-#define TIME_YELLOW2_MS    2000U
+// thời gian xanh, vàng lấy từ biến chung (đơn vị giây) đổi sang ms,
+// để giá trị chỉnh ở chế độ TUNING có tác dụng từ pha kế tiếp.
+// Hai tuyến dùng chung xanh và vàng, nên đỏ = xanh + vàng
+#define TIME_GREEN_MS      ((uint32_t)time_green * 1000U)
+#define TIME_YELLOW_MS     ((uint32_t)time_yellow * 1000U)
 
 typedef enum {
     AUTO_P0,
@@ -27,22 +29,22 @@ static void fsm_automatic_enter(AutoState next) {
     switch (auto_state) {
         case AUTO_P0:
             traffic_set(2, GREEN);
-            setTimer(AUTO_TIMER_ID, TIME_GREEN2_MS);
+            setTimer(AUTO_TIMER_ID, TIME_GREEN_MS);
             break;
 
         case AUTO_P1:
             traffic_set(2, YELLOW);
-            setTimer(AUTO_TIMER_ID, TIME_YELLOW2_MS);
+            setTimer(AUTO_TIMER_ID, TIME_YELLOW_MS);
             break;
 
         case AUTO_P2:
             traffic_set(1, GREEN);
-            setTimer(AUTO_TIMER_ID, TIME_GREEN1_MS);
+            setTimer(AUTO_TIMER_ID, TIME_GREEN_MS);
             break;
 
         case AUTO_P3:
             traffic_set(1, YELLOW);
-            setTimer(AUTO_TIMER_ID, TIME_YELLOW1_MS);
+            setTimer(AUTO_TIMER_ID, TIME_YELLOW_MS);
             break;
 
         default:
