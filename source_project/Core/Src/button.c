@@ -68,7 +68,7 @@ void button_init(void)
 
 void button_run(void) {
     for (uint8_t i = 0; i < BUTTON_COUNT; i++) {
-        ButtonState *btn = &button[i];
+        ButtonState *btn = &buttons[i];
         uint8_t raw = button_read_raw(i);
 
         if (raw == btn->last_sample) {
@@ -87,7 +87,7 @@ void button_run(void) {
                 
             btn->stable_pressed = raw;
             
-            if (raw = 1) {
+            if (raw == 1U) {
                 btn->press_event = 1U;
                 btn->hold_ticks = 0U;
                 btn->long_sent = 0U;
