@@ -21,7 +21,16 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "scheduler.h"
+#include "software_timer.h"
+#include "button.h"
+#include "traffic_light.h"
+#include "global.h"
+#include "dht20.h"
+#include "lcd.h"
+#include "display.h"
+#include "fsm_mode.h"
+#include "fsm_automatic.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -97,6 +106,9 @@ int main(void)
   MX_I2C1_Init();
   MX_TIM2_Init();
   MX_USART2_UART_Init();
+  
+
+  /* USER CODE BEGIN 2 */
   // Private init
   SCH_Init();
   timer_init();
@@ -105,9 +117,18 @@ int main(void)
 
   SCH_Add_Task(timerRun, 1, 1);
   HAL_TIM_Base_Start_IT(&htim2);
+  // khởi tạo các module (global trước fsm_mode, lcd trước fsm_mode)
+  global_init();
+  traffic_init();
+  dht20_init(&hi2c1);
+  lcd_init(&hi2c1);
+  fsm_mode_init();
 
-  /* USER CODE BEGIN 2 */
-
+  // đăng ký task (tick 10 ms)
+  SCH_Add_Task(button_run, 0, 1);        // quét và lọc nhiễu nút, mỗi 10 ms
+  SCH_Add_Task(fsm_mode_run, 0, 1);      // chuyển chế độ + chạy máy trạng thái hiện tại, mỗi 10 ms
+  SCH_Add_Task(dht20_update, 0, 10);     // đọc DHT20, mỗi 100 ms (tự đo mỗi 2 giây)
+  SCH_Add_Task(display_run, 0, 100);     // cập nhật LCD, mỗi 1 giây
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -115,8 +136,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+    
     /* USER CODE BEGIN 3 */
+    SCH_Dispatch_Tasks();
   }
   /* USER CODE END 3 */
 }
