@@ -27,6 +27,17 @@ target_link_libraries(${PROJECT_NAME} stm32cubemx)
 # Add user sources here; keep the original Core/Inc and Core/Src structure.
 target_sources(${PROJECT_NAME} PRIVATE
     Core/Src/scheduler.c
+    Core/Src/software_timer.c
+    Core/Src/button.c
+    Core/Src/global.c
+    Core/Src/traffic_light.c
+    Core/Src/fsm_automatic.c
+    Core/Src/fsm_manual.c
+    Core/Src/fsm_tuning.c
+    Core/Src/fsm_mode.c
+    Core/Src/dht20.c
+    Core/Src/lcd.c
+    Core/Src/display.c
 )
 
 # Keep board-specific linker settings out of the compiler toolchain.
