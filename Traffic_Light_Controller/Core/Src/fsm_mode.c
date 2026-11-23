@@ -73,13 +73,32 @@ static void fsm_mode_start(SystemMode mode)
     display_refresh();
 }
 
+// =1 khi đã hết thời gian khởi động (đèn đỏ toàn bộ), fsm_mode_run mới bắt đầu chạy
+static uint8_t boot_done = 0U;
+
 /*
-  hàm khởi động hệ thống ở chế độ AUTO, gọi một lần trước khi chạy scheduler.
+  hàm khởi động hệ thống, gọi một lần trước khi chạy scheduler.
+  Mới cấp nguồn thì cả hai tuyến giữ Đỏ, chế độ là AUTO nhưng chưa chạy.
+  Sau đó one-shot task fsm_mode_boot_done (đăng ký ở main) sẽ cho AUTO chạy.
  */
 void fsm_mode_init(void)
 {
     fsm_mode_clear_buttons(); //clear flag button
-    fsm_mode_start(MODE_AUTO); //mặc định mới vô là AUTO
+    system_mode = MODE_AUTO;   //mặc định mới vô là AUTO
+    fsm_automatic_stop();      //hai tuyến Đỏ, AUTO chưa chạy
+    boot_done = 0U;
+    display_refresh();
+}
+
+/*
+  one-shot task (Period = 0), chạy đúng một lần sau thời gian đèn đỏ toàn bộ lúc khởi động.
+  Xóa nút bấm trong lúc chờ rồi cho AUTO chạy từ pha đầu.
+ */
+void fsm_mode_boot_done(void)
+{
+    boot_done = 1U;
+    fsm_mode_clear_buttons();
+    fsm_automatic_init();
 }
 
 /*
@@ -90,6 +109,10 @@ void fsm_mode_init(void)
 void fsm_mode_run(void)
 {
     SystemMode next;
+    //đang trong thời gian đèn đỏ lúc khởi động thì chưa xử lý gì
+    if (boot_done == 0U) {
+        return;
+    }
     //coi có tín hiệu button đổi mode không
     if (isButtonPressed(BTN_MODE_ID)) {
         switch (system_mode) {

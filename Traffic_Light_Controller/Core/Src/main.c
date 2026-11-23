@@ -127,6 +127,7 @@ int main(void)
   SCH_Add_Task(fsm_mode_run, 0, 1);      // chuyển chế độ + chạy máy trạng thái hiện tại, mỗi 10 ms
   SCH_Add_Task(dht20_update, 0, 10);     // đọc DHT20, mỗi 100 ms (tự đo mỗi 2 giây)
   SCH_Add_Task(display_run, 0, 100);     // cập nhật LCD, mỗi 1 giây
+  SCH_Add_Task(fsm_mode_boot_done, 200, 0); // one-shot: sau 2 giây đèn đỏ toàn bộ thì AUTO mới chạy
   /* USER CODE END 2 */
 
   /* Infinite loop */

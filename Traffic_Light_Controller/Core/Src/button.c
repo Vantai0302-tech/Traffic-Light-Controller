@@ -26,14 +26,16 @@ static GPIO_TypeDef * const button_ports[BUTTON_COUNT] = {
     BTN_1_GPIO_Port,
     BTN_2_GPIO_Port,
     BTN_3_GPIO_Port,
-    BTN_4_GPIO_Port
+    BTN_4_GPIO_Port,
+    B1_GPIO_Port    // nút USER (PC13), id 4
 };
 
 static const uint16_t button_pins[BUTTON_COUNT] = {
     BTN_1_Pin,
     BTN_2_Pin,
     BTN_3_Pin,
-    BTN_4_Pin
+    BTN_4_Pin,
+    B1_Pin          // nút USER (PC13), id 4
 };
 
 static uint8_t button_read_raw(uint8_t id) {

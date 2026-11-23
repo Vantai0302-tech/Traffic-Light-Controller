@@ -7,7 +7,10 @@
     2. Đăng ký task chu kỳ 10 ms vào scheduler (tick 10 ms nên là 1 tick):
            SCH_Add_Task(fsm_mode_run, 0, 1);
        Task này tự gọi hàm chạy của máy trạng thái đang hoạt động (fsm_automatic, fsm_manual, fsm_tuning).
-    3. Nút id 0 (BTN_1) bấm một lần để sang chế độ kế tiếp.
+    3. Đăng ký one-shot task (Period = 0) để hết thời gian khởi động thì AUTO mới chạy:
+           SCH_Add_Task(fsm_mode_boot_done, 200, 0);   // 200 tick = 2 s, chỉ chạy một lần
+       Trong 2 s đầu hai tuyến giữ Đỏ, nút bấm chưa có tác dụng.
+    4. Nút id 0 (BTN_1) bấm một lần để sang chế độ kế tiếp.
  
   KHI ĐỔI CHẾ ĐỘ (trả lời câu hỏi trọng tâm của đề):
     - Đèn 2 tuyến: dừng chế độ cũ -> cả hai tuyến về Đỏ -> chế độ mới tự đặt trạng thái đầu tiên của nó.
@@ -20,8 +23,11 @@
 #ifndef FSM_MODE_H
 #define FSM_MODE_H
 
-// khởi động hệ thống ở chế độ AUTO
+// khởi động hệ thống: hai tuyến Đỏ, chế độ AUTO nhưng chưa chạy
 void fsm_mode_init(void);
+
+// one-shot task: đăng ký SCH_Add_Task(fsm_mode_boot_done, 200, 0), sau 2 s cho AUTO chạy
+void fsm_mode_boot_done(void);
 
 // xử lý nút đổi chế độ, rồi chạy máy trạng thái của chế độ hiện tại, gọi mỗi 10 ms
 void fsm_mode_run(void);

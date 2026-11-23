@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define BUTTON_COUNT          4
+#define BUTTON_COUNT          5 //dùng 5 button, tính cả userbutton
 #define BUTTON_DEBOUNCE_TICKS 3
 #define BUTTON_LONG_TICKS     100
 
