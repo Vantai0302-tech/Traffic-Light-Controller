@@ -2,10 +2,26 @@
 #include "main.h"
 
 static void traffic_write(GPIO_TypeDef *portA, uint16_t pinA, GPIO_TypeDef *portB, uint16_t pinB, TrafficColor color) {
-    // Bit cao so 2
-    uint8_t a = ((uint8_t)color >> 1U) & 1U;
-    // Bit cao so 1
-    uint8_t b = (uint8_t)color & 1U;
+    uint8_t hardware_code;
+
+    switch (color) {
+    case GREEN:  
+        hardware_code = 2U; 
+        break; // GPIO 10
+    case YELLOW: 
+        hardware_code = 1U; 
+        break; // GPIO 01
+    case RED:    
+        hardware_code = 3U; 
+        break; // GPIO 11
+    case OFF:    
+        hardware_code = 0U; 
+        break; // GPIO 00
+    default: return;
+}
+
+uint8_t a = (hardware_code >> 1U) & 1U;
+uint8_t b = hardware_code & 1U;
 
     // Set HIGH signals first.
     if (a != 0U) {

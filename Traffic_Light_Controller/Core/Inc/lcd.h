@@ -19,7 +19,7 @@
 
 //config module
 
-#define LCD_I2C_ADDR     0x27U //địa chỉ I2C 7-bit của module LCD
+#define LCD_I2C_ADDR     0x21U //địa chỉ I2C 7-bit của module LCD
 
 /*
   Cách nối chân của PCF8574 tới LCD (bit nào của byte gửi đi ứng với chân nào).
